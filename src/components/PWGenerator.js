@@ -13,6 +13,7 @@ class PWGenerator extends Component {
     let targetValue = e.target.value;
     this.checkForNumbers(targetValue);
     this.checkforUpperCase(targetValue);
+    this.checkForSymbols(targetValue);
     this.setState({
       passwordLength: targetValue.length > 7 ? true : false
     });
@@ -32,6 +33,18 @@ class PWGenerator extends Component {
     });
   };
 
+  checkForSymbols = string => {
+    let symbols = new RegExp(/[^A-Z a-z0-9]/);
+    this.setState({
+      containsSymbols: symbols != null ? true : false
+    });
+  };
+
+  submitForm = e => {
+    e.preventDefault();
+    alert("Form submitted");
+  };
+
   render() {
     let {
       passwordLength,
@@ -39,6 +52,11 @@ class PWGenerator extends Component {
       isUpperCase,
       containsSymbols
     } = this.state;
+
+    let btnStatus =
+      passwordLength && containsNumber && isUpperCase && containsSymbols
+        ? false
+        : true;
 
     return (
       <>
@@ -64,7 +82,11 @@ class PWGenerator extends Component {
                 Containes Symbols
               </div>
             </div>
-            <button className="Submit" disabled={true}>
+            <button
+              className="Submit"
+              disabled={btnStatus}
+              onClick={this.submitForm}
+            >
               Submit
             </button>
           </form>
