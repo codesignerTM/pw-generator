@@ -11,14 +11,34 @@ class PWGenerator extends Component {
 
   handleChange = input => e => {
     let targetValue = e.target.value;
-
+    this.checkForNumbers(targetValue);
+    this.checkforUpperCase(targetValue);
     this.setState({
       passwordLength: targetValue.length > 7 ? true : false
     });
   };
 
+  checkForNumbers = string => {
+    let matches = string.match(/\d+/g);
+    this.setState({
+      containsNumber: matches != null ? true : false
+    });
+  };
+
+  checkforUpperCase = string => {
+    let matches = string.match(/[A-Z]/);
+    this.setState({
+      isUpperCase: matches != null ? true : false
+    });
+  };
+
   render() {
-    let { passwordLength } = this.state;
+    let {
+      passwordLength,
+      containsNumber,
+      isUpperCase,
+      containsSymbols
+    } = this.state;
 
     return (
       <>
@@ -34,9 +54,15 @@ class PWGenerator extends Component {
               <div className={passwordLength ? "green" : null}>
                 Containes more than 8 character
               </div>
-              <div>Containes numbers</div>
-              <div>Containes UpperCase</div>
-              <div>Containes Symbols</div>
+              <div className={containsNumber ? "green" : null}>
+                Containes numbers
+              </div>
+              <div className={isUpperCase ? "green" : null}>
+                Containes UpperCase
+              </div>
+              <div className={containsSymbols ? "green" : null}>
+                Containes Symbols
+              </div>
             </div>
             <button className="Submit" disabled={true}>
               Submit
